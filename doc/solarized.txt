@@ -1,0 +1,94 @@
+*solarized.nvim* *solarized*
+
+solarized.nvim                                     For Neovim 0.11+
+
+=============================================================================
+CONTENTS                                                    *solarized-contents*
+
+1. Introduction .............................................. |solarized-intro|
+2. Usage ..................................................... |solarized-usage|
+3. Configuration ............................................. |solarized-config|
+4. Plugin Support ............................................ |solarized-plugins|
+5. Variants .................................................. |solarized-variants|
+
+=============================================================================
+INTRODUCTION                                                   *solarized-intro*
+
+solarized.nvim is a Neovim-only Solarized colorscheme scaffold written in Lua.
+Its variant model is explicit by design: load the exact variant you want by
+name instead of relying on the |'background'| option to choose one for you.
+
+=============================================================================
+USAGE                                                           *solarized-usage*
+
+Load a variant directly:
+
+    :colorscheme solarized-dark
+    :colorscheme solarized-light
+    :colorscheme solarized-dark-soft
+
+Lua API:
+
+    lua require('solarized').setup({})
+    lua require('solarized').load('dark-soft')
+    lua require('solarized').palette('dark')
+
+=============================================================================
+CONFIGURATION                                                 *solarized-config*
+
+Call setup() before loading a colorscheme if you want to override defaults:
+
+    lua << EOF
+    require('solarized').setup({
+      transparent = false,
+      terminal_colors = true,
+      on_colors = function(colors, variant)
+        colors.syntax.string = colors.green
+      end,
+      on_highlights = function(highlights, colors, variant)
+        highlights.Visual = { bg = colors.visual }
+      end,
+    })
+    EOF
+
+Available options:
+
+    transparent       Clear core UI backgrounds where supported.
+                      Search, diff, and other semantic highlights keep
+                      their background colors.
+    terminal_colors   Set g:terminal_color_0..15.
+    styles            Per-group style tables for comments, keywords,
+                      functions, variables, and types.
+    on_colors         Callback(colors, variant) to adjust semantic colors.
+    on_highlights     Callback(highlights, colors, variant) to adjust groups.
+
+=============================================================================
+PLUGIN SUPPORT                                              *solarized-plugins*
+
+solarized.nvim defines highlight groups for these plugins:
+
+    blink.cmp
+    gitsigns.nvim
+    neogit
+    nvim-cmp
+    telescope.nvim
+
+These groups are always defined. No plugin detection or extra setup is needed.
+
+=============================================================================
+VARIANTS                                                     *solarized-variants*
+
+Available named entrypoints:
+
+    solarized            Alias of solarized-dark.
+    solarized-dark       Dark baseline.
+    solarized-dark-soft  Lower-contrast dark variant.
+    solarized-dark-hard  Higher-contrast dark variant.
+    solarized-light      Light baseline.
+    solarized-light-soft Lower-contrast light variant.
+    solarized-light-hard Higher-contrast light variant.
+
+Changing |'background'| after a variant is loaded should reload that exact
+colorscheme name, not switch to another one automatically.
+
+vim:tw=78:ts=8:noet:ft=help:norl:
